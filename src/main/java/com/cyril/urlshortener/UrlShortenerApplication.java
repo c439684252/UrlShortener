@@ -1,13 +1,13 @@
 package com.cyril.urlshortener;
 
-import com.cyril.urlshortener.bean.ShortUrl;
-import com.cyril.urlshortener.mapper.ShortUrlMapper;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.mybatis.spring.annotation.MapperScan;
 
+@EnableAutoConfiguration
 @SpringBootApplication
-@MapperScan("com.cyril.urlshortener.mapper")
+@MapperScan(basePackages = "com.cyril.urlshortener.mapper")
 public class UrlShortenerApplication {
 
     public static void main(String[] args) {

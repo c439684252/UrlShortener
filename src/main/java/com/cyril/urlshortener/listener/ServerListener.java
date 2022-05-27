@@ -3,9 +3,6 @@ package com.cyril.urlshortener.listener;
 import com.cyril.urlshortener.bean.InputUrl;
 import com.cyril.urlshortener.server.InputUrlServer;
 import lombok.Setter;
-import lombok.Value;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Timer;
