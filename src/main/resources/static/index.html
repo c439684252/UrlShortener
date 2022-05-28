@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body >
+<h1>Tiny URL demo</h1>
+<!--<form method="post" action="/user/login" >-->
+<!--    <input name="username" type="text"  placeholder="请输入用户名"/>-->
+<!--    <input type="password" name="password"  />-->
+<!--    <input type="submit" th:value="登录"/>-->
+<!--</form>-->
+<form method="post" action="/input" >
+    <input type="text" name="longUrl" placeholder="Long URL"/>
+    <input type="text" name="custom" placeholder="Your Custom URL" />
+    <input type="submit" th:value="Submit"/>
+</form>
+</body>
+</html>

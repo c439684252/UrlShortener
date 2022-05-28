@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class InputController {
 
-    @Autowired
-    InputUrlServer inputUrlServer;
+    private final InputUrlServer inputUrlServer;
 
-    @GetMapping("/")
-    public String greeting() {
-        return "Let's goooo";
+    @Autowired
+    public InputController(InputUrlServer inputUrlServer) {
+        this.inputUrlServer = inputUrlServer;
     }
 
     @PostMapping("/input")
