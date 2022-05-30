@@ -1,15 +1,11 @@
 package com.cyril.urlshortener.bean;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class InputUrl extends AbstractUrl {
-    private String customUrl;
 
-    public ShortUrl toShortUrl() {
-        ShortUrl shortUrl = new ShortUrl();
-        shortUrl.setLongUrl(getLongUrl());
-        shortUrl.setCreateTimeStamp(getCreateTimeStamp());
-        return shortUrl;
-    }
+    @Getter
+    @Setter
+    private String customUrl;
 }

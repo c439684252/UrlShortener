@@ -3,12 +3,16 @@ package com.cyril.urlshortener.controller;
 import com.cyril.urlshortener.bean.InputUrl;
 import com.cyril.urlshortener.server.InputUrlServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class InputController {
 
+
     private final InputUrlServer inputUrlServer;
+    private static final String STORE_PAGE = "store";
 
     @Autowired
     public InputController(InputUrlServer inputUrlServer) {
@@ -16,14 +20,16 @@ public class InputController {
     }
 
     @PostMapping("/input")
-    @ResponseBody
-    public InputUrl input(@RequestParam String longUrl, @RequestParam(required = false) String custom) {
+    public String input(@RequestParam String longUrl, @RequestParam(required = false) String custom, Model model) {
         InputUrl inputUrl = new InputUrl();
         inputUrl.setLongUrl(longUrl);
         inputUrl.setCreateTimeStamp(System.currentTimeMillis());
         inputUrl.setCustomUrl(custom);
-        inputUrlServer.addNewUrl(inputUrl);
 
-        return inputUrl;
+        String shortUrl =  inputUrlServer.process(inputUrl);
+        model.addAttribute("short_url", shortUrl);
+        return STORE_PAGE;
     }
+
+
 }

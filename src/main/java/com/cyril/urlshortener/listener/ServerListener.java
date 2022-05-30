@@ -1,14 +1,16 @@
 package com.cyril.urlshortener.listener;
 
-import com.cyril.urlshortener.bean.InputUrl;
 import com.cyril.urlshortener.server.InputUrlServer;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class ServerListener extends TimerTask {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ServerListener.class);
 
     @Setter
     private InputUrlServer inputUrlServer;
@@ -29,11 +31,11 @@ public class ServerListener extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println(String.format("At %s data in ServerMap", System.currentTimeMillis()));
-        List<InputUrl> inputUrls = inputUrlServer.getInputUrls();
-        for (InputUrl i : inputUrls) {
-            System.out.println(i);
-        }
+        LOG.debug("At {} data in ServerMap", System.currentTimeMillis());
+//        List<InputUrl> inputUrls = inputUrlServer.getInputUrls();
+//        for (InputUrl i : inputUrls) {
+//            LOG.debug(i);
+//        }
     }
 
     public void monitor() {

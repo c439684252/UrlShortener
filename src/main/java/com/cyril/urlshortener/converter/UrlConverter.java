@@ -14,11 +14,11 @@ public class UrlConverter {
     }
 
     public static ShortUrl shorten(InputUrl inputUrl) {
-        ShortUrl shortUrl = inputUrl.toShortUrl();
+        ShortUrl shortUrl = new ShortUrl(inputUrl);
         if (inputUrl.getCustomUrl() != null) {
-            shortUrl.setShortUrl(customConvert(inputUrl.getCustomUrl()));
+            shortUrl.setShortUrlKey(customConvert(inputUrl.getCustomUrl()));
         } else {
-            shortUrl.setShortUrl(defaultConvert(inputUrl.getLongUrl()));
+            shortUrl.setShortUrlKey(defaultConvert(inputUrl.getLongUrl()));
         }
         return shortUrl;
     }

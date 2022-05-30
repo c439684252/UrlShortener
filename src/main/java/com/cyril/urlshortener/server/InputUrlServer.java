@@ -2,19 +2,20 @@ package com.cyril.urlshortener.server;
 
 import com.cyril.urlshortener.bean.InputUrl;
 import com.cyril.urlshortener.bean.ShortUrl;
+import com.cyril.urlshortener.cache.UrlCacheRefresher;
 import com.cyril.urlshortener.converter.UrlConverter;
 import com.cyril.urlshortener.listener.ServerListener;
 import com.cyril.urlshortener.mapper.ShortUrlMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.annotation.Resource;
 @Service
 public class InputUrlServer {
+    private static final Logger LOG = LoggerFactory.getLogger(InputUrlServer.class);
 
-    @Autowired
+    @Resource
     ShortUrlMapper shortUrlMapper;
 
 //    @PostConstruct
@@ -24,22 +25,16 @@ public class InputUrlServer {
         serverListener.monitor();
     }
 
-    private List<InputUrl> inputUrls = new ArrayList<>();
-
-    public List<InputUrl> getInputUrls() {
-        return inputUrls;
+    // todo new added urls put into cache by default?
+    public String process(InputUrl inputUrl) {
+        ShortUrl shorten = UrlConverter.shorten(inputUrl);
+        insertToDB(shorten);
+        return shorten.getFullShortUrl();
     }
 
-    public void addNewUrl(InputUrl inputUrl) {
-        System.out.println(String.format("Add new long URL: %s to server", inputUrl.getLongUrl()));
-        inputUrls.add(inputUrl);
-        // todo test
-        insertToDB(UrlConverter.shorten(inputUrl));
-    }
-
-    private boolean insertToDB(ShortUrl shortUrl) {
+    // todo remove log
+    private void insertToDB(ShortUrl shortUrl) {
         shortUrlMapper.insert(shortUrl);
-        System.out.println(String.format("Insert shorten URL to Database..."));
-        return true;
+        LOG.debug("Insert {} shortened URL to Database...", shortUrl);
     }
 }

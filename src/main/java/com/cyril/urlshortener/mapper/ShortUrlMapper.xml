@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cyril.urlshortener.mapper.ShortUrlMapper">
-        <sql id="findLongUrls" >
-            select long_url
-            from url_pair
-            where short_url = '${short_input}'
-        </sql>
-    <!--    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
-    <!--        select-->
-    <!--        <include refid="Base_Column_List" />-->
-    <!--        from adjustsalary-->
-    <!--        where id = #{id,jdbcType=INTEGER}-->
-    <!--    </select>-->
+    <resultMap id="Url_Pair" type="com.cyril.urlshortener.dao.UrlPair">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="short_url_key" property="shortUrlKey" jdbcType="VARCHAR" />
+        <result column="long_url" property="longUrl" jdbcType="VARCHAR" />
+<!--        <result column="usage_cnt" property="usageCnt" jdbcType="INTEGER" />-->
+    </resultMap>
+    <sql id="findLongUrls" >
+        SELECT long_url
+        FROM url_pair
+        WHERE short_url_key = '${short_input}'
+    </sql>
     <insert id="insert" parameterType="com.cyril.urlshortener.bean.ShortUrl">
-        insert into url_pair
-        values (null, #{longUrl,jdbcType=VARCHAR}, #{shortUrl,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE})
+        INSERT INTO url_pair(long_url, short_url_key, create_time)
+        VALUES (#{longUrl,jdbcType=VARCHAR}, #{shortUrlKey,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE})
     </insert>
+    <delete id="deleteByDate">
+#         delete
+    </delete>
+    <delete id="deleteByUrlPair">
+
+    </delete>
     <select id="selectByShortUrl" parameterType="com.cyril.urlshortener.bean.ShortUrl" resultType="java.lang.String">
         <include refid="findLongUrls">
-            <property name="short_inputs" value="#{shortUrl,jdbcType=VARCHAR}" />
+            <property name="short_inputs" value="#{shortUrlKey,jdbcType=VARCHAR}" />
         </include>
     </select>
     <select id="selectByString" resultType="java.lang.String">
         <include refid="findLongUrls">
             <property name="short_inputs" value="${shortUrl}" />
         </include>
+    </select>
+    <select id="getTopN" resultMap="Url_Pair" parameterType="integer">
+        SELECT  short_url_key, long_url
+        FROM url_pair
+        LIMIT ${n}
     </select>
 </mapper>

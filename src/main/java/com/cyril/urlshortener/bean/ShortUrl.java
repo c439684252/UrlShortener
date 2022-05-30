@@ -1,13 +1,26 @@
 package com.cyril.urlshortener.bean;
 
-import lombok.Data;
+import com.cyril.urlshortener.utils.Constant;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
-@Data
 public class ShortUrl extends AbstractUrl {
-    private String shortUrl;
+
+    public ShortUrl(){};
+
+    public ShortUrl(InputUrl inputUrl) {
+        this.setLongUrl(inputUrl.getLongUrl());
+        this.setCreateTimeStamp(inputUrl.getCreateTimeStamp());
+    }
+
+    @Getter
+    private String shortUrlKey;
+
+    @Getter
+    private String fullShortUrl;
 
     private Date createDate;
 
@@ -19,5 +32,14 @@ public class ShortUrl extends AbstractUrl {
         Timestamp timestamp = new Timestamp(getCreateTimeStamp());
         createDate = new Date(timestamp.getTime());
         return createDate;
+    }
+
+    public void setShortUrlKey(String shortUrlKey) {
+        this.shortUrlKey = shortUrlKey;
+        this.fullShortUrl = transToFullShortUrl(shortUrlKey);
+    }
+
+    private String transToFullShortUrl(String shortUrlKey) {
+        return String.format("%s/%s/%s", Constant.CURRENT_HOST, Constant.PREFIX, shortUrlKey);
     }
 }
