@@ -5,36 +5,44 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="short_url_key" property="shortUrlKey" jdbcType="VARCHAR" />
         <result column="long_url" property="longUrl" jdbcType="VARCHAR" />
-<!--        <result column="usage_cnt" property="usageCnt" jdbcType="INTEGER" />-->
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="access_cnt" property="accessCnt" jdbcType="INTEGER" />
+        <result column="last_access_timestamp" property="lastAccessTs" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="findLongUrls" >
         SELECT long_url
         FROM url_pair
         WHERE short_url_key = '${short_input}'
     </sql>
+    <sql id="fillUrlPair" >
+        id, short_url_key, long_url, create_time, access_cnt, last_access_timestamp
+    </sql>
     <insert id="insert" parameterType="com.cyril.urlshortener.bean.ShortUrl">
         INSERT INTO url_pair(long_url, short_url_key, create_time)
         VALUES (#{longUrl,jdbcType=VARCHAR}, #{shortUrlKey,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE})
     </insert>
-    <delete id="deleteByDate">
-#         delete
+    <delete id="deleteByDate" parameterType="java.util.Date">
+        DELETE FROM url_pair WHERE last_access_timestamp &lt; #{date};
     </delete>
-    <delete id="deleteByUrlPair">
-
+    <delete id="deleteByExistPeriod" parameterType="integer">
+        DELETE FROM url_pair WHERE datediff(last_access_timestamp, create_time) &gt; '${days}'
     </delete>
-    <select id="selectByShortUrl" parameterType="com.cyril.urlshortener.bean.ShortUrl" resultType="java.lang.String">
-        <include refid="findLongUrls">
-            <property name="short_inputs" value="#{shortUrlKey,jdbcType=VARCHAR}" />
-        </include>
-    </select>
+    <delete id="deleteByExistPeriodTest">
+        DELETE FROM url_pair WHERE datediff(DAY, last_access_timestamp, create_time) &gt; '${days}'
+    </delete>
     <select id="selectByString" resultType="java.lang.String">
         <include refid="findLongUrls">
             <property name="short_inputs" value="${shortUrl}" />
         </include>
     </select>
     <select id="getTopN" resultMap="Url_Pair" parameterType="integer">
-        SELECT  short_url_key, long_url
+        SELECT <include refid="fillUrlPair" />
         FROM url_pair
+        ORDER BY access_cnt DESC
         LIMIT ${n}
+    </select>
+    <select id="selectAll" resultMap="Url_Pair">
+        SELECT <include refid="fillUrlPair" />
+        FROM url_pair;
     </select>
 </mapper>

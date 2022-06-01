@@ -5,7 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class UrlHelper {
+public class UrlUtil {
     private enum ErrorCode {
         NO_ERROR,
         SCHEME_ERROR,

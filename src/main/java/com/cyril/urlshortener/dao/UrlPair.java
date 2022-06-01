@@ -2,6 +2,8 @@ package com.cyril.urlshortener.dao;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 public class UrlPair {
     private Integer id;
@@ -10,5 +12,9 @@ public class UrlPair {
 
     private String longUrl;
 
-//    private String usageCnt;
+    private String createTime;
+
+    private Integer accessCnt;
+
+    private Timestamp lastAccessTs;
 }

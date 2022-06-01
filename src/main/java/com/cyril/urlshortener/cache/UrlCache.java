@@ -24,7 +24,7 @@ public class UrlCache {
     private ShortUrlMapper shortUrlMapper;
 
     @Getter
-    private Map<String, List<String>> cache = new ConcurrentHashMap<>(URL_CACHE_CAPACITY);
+    private Map<String, List<String>> cache;
 
     @Getter
     private int currentCacheSize = 0;

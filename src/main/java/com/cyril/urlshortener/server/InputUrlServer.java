@@ -2,7 +2,6 @@ package com.cyril.urlshortener.server;
 
 import com.cyril.urlshortener.bean.InputUrl;
 import com.cyril.urlshortener.bean.ShortUrl;
-import com.cyril.urlshortener.cache.UrlCacheRefresher;
 import com.cyril.urlshortener.converter.UrlConverter;
 import com.cyril.urlshortener.listener.ServerListener;
 import com.cyril.urlshortener.mapper.ShortUrlMapper;
@@ -27,9 +26,14 @@ public class InputUrlServer {
 
     // todo new added urls put into cache by default?
     public String process(InputUrl inputUrl) {
-        ShortUrl shorten = UrlConverter.shorten(inputUrl);
-        insertToDB(shorten);
-        return shorten.getFullShortUrl();
+        try {
+            ShortUrl shorten = UrlConverter.shorten(inputUrl);
+            insertToDB(shorten);
+            return shorten.getFullShortUrl();
+        } catch (Exception e) {
+            LOG.error("Error in InputUrlServer", e);
+            return "";
+        }
     }
 
     // todo remove log
