@@ -2,6 +2,7 @@ package com.cyril.urlshortener.controller;
 
 import com.cyril.urlshortener.bean.InputUrl;
 import com.cyril.urlshortener.server.InputUrlServer;
+import com.cyril.urlshortener.utils.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,7 @@ public class InputController {
         InputUrl inputUrl = new InputUrl();
         inputUrl.setLongUrl(longUrl);
         inputUrl.setCreateTimeStamp(System.currentTimeMillis());
-        inputUrl.setCustomUrl(custom);
+        inputUrl.setCustomUrl(UrlUtil.urlPathCheck(custom));
 
         String shortUrl =  inputUrlServer.process(inputUrl);
         model.addAttribute("short_url", shortUrl);

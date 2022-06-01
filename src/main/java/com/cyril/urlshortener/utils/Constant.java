@@ -7,4 +7,6 @@ public class Constant {
     public final static String CURRENT_HOST = "localhost:8080";
 
     public final static int URL_CACHE_CAPACITY = 5;
+
+    public final static String DEFAULT_SCHEME = "https";
 }

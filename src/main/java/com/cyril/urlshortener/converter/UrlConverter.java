@@ -25,8 +25,9 @@ public class UrlConverter {
 
     public static ShortUrl shorten(InputUrl inputUrl) throws MalformedURLException, URISyntaxException {
         ShortUrl shortUrl = new ShortUrl(inputUrl);
-        if (!"".equals(inputUrl.getCustomUrl())) {
-            shortUrl.setShortUrlKey(customConvert(inputUrl.getCustomUrl()));
+        String customUrl = inputUrl.getCustomUrl();
+        if (!"".equals(customUrl)) {
+            shortUrl.setShortUrlKey(customConvert(customUrl));
         } else {
             shortUrl.setShortUrlKey(defaultConvert(inputUrl.getLongUrl()));
         }
